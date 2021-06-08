@@ -1,5 +1,8 @@
 # Leetcode-Practice
  
+ > [算法初级](https://osjobs.net/course/algorithms/%E5%88%9D%E7%BA%A7.html)
+ > [算法中级](https://osjobs.net/course/)
+ 
  
 ## 链表
 ###  理论
