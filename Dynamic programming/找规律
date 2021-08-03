@@ -1,0 +1,117 @@
+
+
+## 13. 罗马数字转整数
+
+
+```js
+/**
+ * 将罗马字符与数字写成映射的关系, 然后遍历罗马字符串, 找到映射表中对应是数字相加即可.
+ * 时间复杂度: O(N), N为字符串长度
+ * 空间复杂度: O(1)
+ */
+var romanToInt = function(s) {
+    const map =  {
+        I: 1,
+        V: 5,
+        IV: 4,
+        IX: 9,
+        X: 10,
+        XL: 40,
+        XC: 90,
+        L: 50,
+        C: 100,
+        CD: 400,
+        CM: 900,
+        D: 500,
+        M: 1000,
+    }
+    let res = 0;
+    let index = 0;
+    let len = s.length;
+    while(index < len){
+        // 先取出两位罗马字符, 查看map中是否存在
+        // 如果存在, 则说明index应该加2
+        // 如果不存在, 说明result应该加上一位罗马字符对应的数字,index应该加1
+        // 即便循环到 index 等于 len-1, 只剩下最后一位罗马字符,但是if判断依然为true 也没有关系,不影响最后的结果.
+        if(map[s.slice(index, index+2)]){
+            res += map[s.slice(index, index+2)];
+            index += 2;
+        }else{
+            res += map[s.slice(index, index+1)];
+            index += 1;
+        }
+    }
+    return res;
+};
+
+```
+
+
+-----
+
+## 14. 最长公共前缀
+
+
+```js
+
+/**
+ * 方法4: 二分查找 (对字符串进行二分查找)
+ *  最长公共前缀的长度一定小于等于 字符串的最小长度
+ *  
+ *  二分法是用来找 [最长] 的
+ *      * 确定 low(left) 为0
+        * 确定 hight(right) 是 数组中的字符串的最小长度
+        * 计算 mid 
+    因为是前缀, 所以假定 数组中任意一个字符串的前mid个字符是 最长的公共前缀, 然后用这个前缀去和数组中的字符串比较. 如果有不符合这个前缀字符串的, 说明它不是公共前缀, 需要移动hight = mid - 1; 如果都符合这个前缀字符串, 那么需要移动 low = mid
+ * 
+ * 时间复杂度：O(mnlogm)，其中 m 是字符串数组中的字符串的最小长度，n 是字符串的数量。二分查找的迭代执行次数是 O(logm)，每次迭代最多需要比较 m*n 个字符，因此总时间复杂度是 O(mnlogm)。
+
+空间复杂度：O(1)。使用的额外空间复杂度为常数。
+ * @param {string[]} strs
+ * @return {string}
+ */
+var longestCommonPrefix = function(strs) {
+    if ((strs === null) || strs.length === 0) return "";
+    // 计算得到最小字符串长度
+    let minLength = Infinity;
+    for (let i = 0; i < strs.length; i++) {
+        minLength = Math.min(minLength, strs[i].length);
+    }
+    // 
+    let low = 0; high = minLength;
+    while(low < high) {
+        // 计算得到字符串最小长度的中间值 (二分查找)
+        let mid = Math.trunc((high - low + 1) / 2) + low;
+        if (isCommonPrefix(strs, mid)) {
+            low = mid;
+        } else {
+            high = mid - 1;
+        }
+    }
+
+    function isCommonPrefix(strs, length) {
+        // 得到mid长度的字符串, 作为一个假定的最长公共前缀
+        let str0 = strs[0].substr(0, length);
+        // 遍历数组中的每一个字符串, 和 str0进行比较
+        for (let i = 1; i < strs.length; i++) {
+            let str = strs[i];
+            for(let j = 0; j < length; j++) {
+                if (str0[j] !== str[j]) {
+                    return false; // 返回false说明str0中含有和其他字符串不同的字符, 下次查找范围需要向左移动(high = mid - 1), 
+                }
+            }
+        }
+        return true; // 返回true说明str0是所以字符串的公共前缀, 但不确定是否为最长, 所以下次查找范围需要向右移动(low = mid)
+    }
+
+    return strs[0].substring(0, low);
+};
+
+```
+
+
+
+
+
+
+
