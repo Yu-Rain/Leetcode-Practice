@@ -1,0 +1,36 @@
+
+# **102. 二叉树的层序遍历
+
+
+```js
+/**
+ * BFS
+ * 时间复杂度: O(N), N代表二叉树的节点数量
+ * 空间复杂度: O(N), 队列存储的数量不会超过N.
+ */
+var levelOrder = function(root) {
+    if (!root) return [];
+    // 存储每层节点的队列
+    const queue = [root];
+    // 存储访问到的节点
+    const nodes = [];
+    while(queue.length > 0) {
+        const len = queue.length;
+        let currentNodes = [];
+        // 先将本层的所有节点取出, 存入nodes中, 并将下一层的节点存入队列中.
+        for (let i = 0; i < len; i++) {
+            const node = queue.shift();
+            currentNodes.push(node.val);
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
+        nodes.push(currentNodes);
+        currentNodes = [];   
+    }
+    return nodes;
+};
+
+```
+
+
+
