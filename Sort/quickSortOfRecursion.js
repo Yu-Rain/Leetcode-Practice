@@ -1,7 +1,10 @@
 /**
  * 递归方式
- * @param nums
- * @returns {*}
+ * 最好 O(nlogn)
+ * 平均 O(nlogn)
+ * 最差 O(n^2)
+ * 空间 O(logn)
+ * 不稳定
  */
 
 function sortArray(nums) {
@@ -84,16 +87,16 @@ function exchange(arr, i, j) {
 function sortArry2(nums) {
   if (nums === null || nums.length <= 1) return nums;
 
-  const queue = [{start: 0, end: nums.length - 1}];
+  const stack = [{start: 0, end: nums.length - 1}];
 
-  while(queue.length > 0) {
-    const {start, end} = queue.pop();
+  while(stack.length > 0) {
+    const {start, end} = stack.pop();
     const mid = partition(nums, start, end);
     if (start < mid - 1) {
-      queue.push({start, end: mid - 1});
+      stack.push({start, end: mid - 1});
     }
     if (mid + 1 < end ) {
-      queue.push({start: mid + 1, end});
+      stack.push({start: mid + 1, end});
     }
   }
 
@@ -101,8 +104,15 @@ function sortArry2(nums) {
 }
 
 
-
-
+/**
+ * 在数字范围内 随机
+ * @param start 开始数字
+ * @param end 结束数字
+ * @returns {number}
+ */
+function rangRandom(start, end) {
+  return parseInt(Math.random() * (end - start + 1) + start);
+}
 
 
 

@@ -1,0 +1,37 @@
+
+# **3. 无重复字符的最长子串
+
+
+```js
+/**
+ * 思路: 滑动窗口
+ * 时间复杂度：O(N)，其中 N 是字符串的长度。
+ * 空间复杂度：O(∣Σ∣)，其中 Σ 表示字符集（即字符串中可以出现的字符）
+ */
+var lengthOfLongestSubstring = function(s) {
+    // 哈希集合，记录每个字符是否出现过
+    const hash = new Set();
+    const len = s.length;
+    // 右指针
+    let right = 0;
+    let answer = 0;// 初始设定长度为0
+    for (let left = 0; left < len; ++left) {
+        if (left !== 0) {
+            // 左指针向右移动一格，移除左侧第一个字符, 因为这个字符是重复字符.
+            hash.delete(s.charAt(left - 1));
+        }
+        while (right < len && !hash.has(s.charAt(right))) {
+            // 不断地移动右指针
+            hash.add(s.charAt(right));
+            ++right;
+        }
+        // 此时right指向第一个重复的字符
+        // 从下标 left 到 right - 1 个字符是一个极长的无重复字符子串
+        // 长度计算 right - left
+        answer = Math.max(answer, right - left);
+    }
+    return answer;
+};
+
+```
+

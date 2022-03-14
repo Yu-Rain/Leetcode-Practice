@@ -18,9 +18,62 @@
  *   2. 如果 最大值的下标 和 i 不相同, 那么在交换之后 需要以最大值的下标为新的节点, 再次调整, 也就是重复步骤1, 此处为递归过程.
  *   3. 如果 最大值的下标 和 i 相同, 那么递归结束
  *
- *  时间复杂度: o(nlogn), 初始化建堆的时间复杂度为 O(n), 重建堆的时间复杂度为O(nlogn)
+ *  时间复杂度: O(nlogn), 初始化建堆的时间复杂度为 O(n), 重建堆的时间复杂度为O(nlogn)
  *  空间复杂度: o(1)
- *
+ * 堆排序是不稳定的排序算法
+ * 在实际应用中，快速排序的性能一般会优于堆排序
  */
 
+function sortArray(nums) {
+  // 构建初始大顶堆
+  buildMaxHeap(nums);
+
+  for (let i = nums.length - 1; i > 0; i--) {
+    // 将本轮排序的最大值交换到排序范围的最后位置.
+    swap(nums, 0, i);
+    // 调整剩余数组, 使其满足大顶堆
+    maxHeapify(nums, 0, i);
+  }
+  return nums;
+}
+
+function buildMaxHeap(arr) {
+  // 从最后一个非叶子节点开始调整大顶堆.
+  // 最后一个非叶子节点的下标为: Math.trunc(arr.length / 2) - 1 或者 (arr.length >> 1) - 1
+  for(let i = Math.trunc(arr.length / 2) - 1; i >= 0; i--) {
+    maxHeapify(arr, i, arr.length);
+  }
+}
+
+function maxHeapify(arr, i, endIndex) {
+  // 左子节点的下标
+  let left = 2 * i + 1;
+  // 右子节点的下标
+  let right = left + 1;
+  // 记录根结点, 左子结点, 右子结点三者中的最大值下标
+  let largest = i;
+  // 与左子结点比较
+  if (left < endIndex && arr[left] > arr[largest]) {
+    largest = left;
+  }
+  // 与右子结点比较
+  if (right < endIndex && arr[right] > arr[largest]) {
+    largest = right;
+  }
+
+  if (largest !== i) {
+    // 将最大值交换为根节点
+    swap(arr, i, largest);
+    // 再次调整交换数字后的大顶堆
+    maxHeapify(arr, largest, endIndex)
+  }
+
+
+}
+
+function swap(arr, i, j) {
+  arr[i] = arr[i] ^ arr[j];
+  arr[j] = arr[i] ^ arr[j];
+  arr[i] = arr[i] ^ arr[j];
+}
 
